@@ -4,7 +4,7 @@
     $ppp  = 4; // pics per page
     $extensions = array('jpg', 'jpeg', 'png', 'gif'); // display these
     $imagewidth = 0; // autoresize off if value <= 0
-    $title = 'Welcome to my gallery.';
+    $title = '   Welcome to my gallery!   ';
 
     if (isset($_GET['page'])) {
         $page = intval($_GET['page']);
@@ -50,6 +50,16 @@
                 font-family: Courier New, monospace;
                 font-size: 0.75em;
             }
+
+            #footer {
+                font-family: Courier New, monospace;
+                font-size: 0.75em;
+                width: 100%;
+                position: relative;
+                bottom: 0px;
+                background-color:#f0f0f0;
+                text-align: right;
+            }
         -->
     </style>
 </head>
@@ -63,15 +73,15 @@
         <br />
         <table border="0" cellspacing="0" cellpadding="2px">
 <?php
-$c = 0;
-foreach (scandir('.') as $file) { // walk all files in dir
+$numpics = 0;
+foreach (scandir('.', 1) as $file) { // walk all files in dir
     foreach ($extensions as $extension) {
         if (strpos($file, '.'.$extension)>0) { // find jpegs
-            $c++;
-            if ($c>($page-1)*$ppp && $c <= $page*$ppp) { // show then on current $page
+            $numpics++;
+            if ($numpics>($page-1)*$ppp && $numpics <= $page*$ppp) { // show then on current $page
                 $caption = basename($file,'.'.$extension); // caption is the filename without extension
 ?>
-                <tr><td><img src="<?php echo $file; ?>" <?php echo ($imagewidth > 0 ? ' width="'.$imagewidth.'px"' : '');?> border="0"></td></tr>
+                <tr><td><a href="<?php echo $file; ?>"><img src="<?php echo $file; ?>" <?php echo ($imagewidth > 0 ? 'width="'.$imagewidth.'px"' : '');?> border="0" alt="<?php echo ($imagewidth > 0 ? 'click to enlarge' : '');?>"></a></td></tr>
                 <tr><td align="center"><span><?php echo $caption; ?></span></td></tr>
                 <tr><td>&nbsp;</td></tr>
 <?php        
@@ -82,20 +92,29 @@ foreach (scandir('.') as $file) { // walk all files in dir
 }
 ?>
         </table>
-        <br />
         <span>
 <?php
     // Page navigation
-    if ($page > 1) {
-        echo '<a href="' . basename(__FILE__) . "?page=".($page-1).'">&lt;--</a>';
-    }
-    if ($c > $page*$ppp) {        
-        echo ($page > 1) ? '&nbsp;|&nbsp;' : '';
-        echo '<a href="' . basename(__FILE__) . "?page=".($page+1).'">--&gt;</a>';
-    }      
+    if ($numpics > $ppp) {
+        $numpages = ceil($numpics / $ppp);
+        if ($page <= 1) {
+            echo '<a style="color: #cccccc">&lt;--</a>';
+        } else {
+            echo '<a href="' . basename(__FILE__) . "?page=".($page - 1).'">&lt;--</a>';
+        }
+        echo '&nbsp;' . $page .'/' . $numpages. '&nbsp;';
+        if ($page >= $numpages) {
+            echo '<a style="color: #cccccc"">--&gt;</a>';
+        } else {
+            echo '<a href="' . basename(__FILE__) . "?page=".($page + 1).'">--&gt;</a>';
+        }
+	}
 ?>
         </span>
-        <br />
     </center>
+    <br />
+    <div id="footer">
+        <a href="https://github.com/fbcom/minigallery" target="_new"><small>get this <u>script</u></small></a>
+    </div>
 </body>
 </html>
