@@ -81,12 +81,12 @@
     <center>
         <br>
 <?php
-    if (0 < strlen($title.$subtitle)) {
+    if (0 < strlen(trim(strip_tags($title.$subtitle)))) {
 ?>
         <span>
-            <?php echo trim($title), "<br>\r"; ?>
+            <?php echo strlen(trim($title))>0 ? trim($title). "<br>\r" : ''; ?>
             <?php echo str_pad('',max(strlen(strip_tags($title)),strlen(strip_tags($subtitle)))+4,'-'), "<br>\r"; ?>
-            <?php echo trim($subtitle), "<br>\r"; ?>
+            <?php echo strlen(trim($subtitle))>0 ? trim($subtitle). "<br>\r" : ''; ?>
         </span>
         <br>
 <?php
