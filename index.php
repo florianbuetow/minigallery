@@ -85,7 +85,7 @@
 ?>
         <span>
             <?php echo trim($title), "<br>\r"; ?>
-            <?php echo str_pad('',max(strlen($title),strlen($subtitle))+4,'-'), "<br>\r"; ?>
+            <?php echo str_pad('',max(strlen(strip_tags($title)),strlen(strip_tags($subtitle)))+4,'-'), "<br>\r"; ?>
             <?php echo trim($subtitle), "<br>\r"; ?>
         </span>
         <br>
