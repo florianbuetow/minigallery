@@ -9,6 +9,7 @@
     $extensions = array('jpg', 'jpeg', 'png', 'gif'); // display these
     $imagewidth = 0; // autoresize is turned off for values <= 0
     $imageclick = 0; // generate link to original image for values != 0
+    $sortorder = 0; // sort order, 1 is reverse alphanum order
 
     $title = '   Welcome to my mini gallery!   '; // optional
     $subtitle = '"The sun never sets on my gallery."" - Larry Gagosian'; // optional
@@ -95,7 +96,7 @@
         <table>
 <?php
 $numpics = 0;
-foreach (scandir('.', 1) as $file) { // walk all files in dir
+foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
     foreach ($extensions as $extension) {
         if (strpos($file, '.'.$extension)>0) { // find imagefiles
             $numpics++;
