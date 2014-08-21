@@ -2,14 +2,18 @@
     // config
     $page = 1; // starting page
     $ppp  = 4; // pics per page
-    $extensions = array('jpg', 'jpeg', 'png', 'gif'); // display these
-    $imagewidth = 0; // autoresize off if value <= 0
-    $title = '   Welcome to my gallery!   ';
-
     if (isset($_GET['page'])) {
-        $page = intval($_GET['page']);
+        $page = max(1, intval($_GET['page']));
     }
+
+    $extensions = array('jpg', 'jpeg', 'png', 'gif'); // display these
+    $imagewidth = 0; // autoresize is turned off for values <= 0
+    $imageclick = 0; // generate link to original image for values != 0
+
+    $title = '   Welcome to my mini gallery!   '; // optional
+    $subtitle = '"The sun never sets on my gallery."" - Larry Gagosian'; // optional
 ?>
+<!DOCTYPE html>
 <html>
     <head>
         <style type="text/css">
@@ -24,7 +28,7 @@
                 display: block;
                 margin-left: auto;
                 margin-right: auto; 
-                padding: 7px;
+                padding: 6px;
                 border: solid 1px;
                 border-color: #c8c8c8;
                 border-width: 1px;
@@ -51,6 +55,16 @@
                 font-size: 0.75em;
             }
 
+            table {
+                padding: 0px;
+                border: 0px;
+                border-spacing: 0px;
+            }
+
+            td {
+                text-align: center;
+            }
+
             #footer {
                 font-family: Courier New, monospace;
                 font-size: 0.75em;
@@ -65,25 +79,32 @@
 </head>
 <body>
     <center>
-        <br />
+        <br>
+<?php
+    if (0 < strlen($title.$subtitle)) {
+?>
         <span>
-            <?php echo $title; ?><br />
-            <?php echo str_pad('',strlen($title)+4,'-');?><br />
+            <?php echo trim($title), "<br>\r"; ?>
+            <?php echo str_pad('',max(strlen($title),strlen($subtitle))+4,'-'), "<br>\r"; ?>
+            <?php echo trim($subtitle), "<br>\r"; ?>
         </span>
-        <br />
-        <table border="0" cellspacing="0" cellpadding="2px">
+        <br>
+<?php
+    }
+?>
+        <table>
 <?php
 $numpics = 0;
 foreach (scandir('.', 1) as $file) { // walk all files in dir
     foreach ($extensions as $extension) {
-        if (strpos($file, '.'.$extension)>0) { // find jpegs
+        if (strpos($file, '.'.$extension)>0) { // find imagefiles
             $numpics++;
             if ($numpics>($page-1)*$ppp && $numpics <= $page*$ppp) { // show then on current $page
-                $caption = basename($file,'.'.$extension); // caption is the filename without extension
+                $caption = basename($file,'.'.$extension); // caption := the filename without extension
 ?>
-                <tr><td><a href="<?php echo $file; ?>"><img src="<?php echo $file; ?>" <?php echo ($imagewidth > 0 ? 'width="'.$imagewidth.'px"' : '');?> border="0" alt="<?php echo ($imagewidth > 0 ? 'click to enlarge' : '');?>"></a></td></tr>
-                <tr><td align="center"><span><?php echo $caption; ?></span></td></tr>
-                <tr><td>&nbsp;</td></tr>
+            <tr><td><a<?php if ($imageclick) { ?> href="<?php echo $file; ?>"<?php } ?>><img src="<?php echo $file; ?>" <?php echo ($imagewidth > 0 ? 'width="'.$imagewidth.'px" ' : '');?>border="0" alt="<?php echo $imageclick ? 'click to enlarge' : $file; ?>"></a></td></tr>
+            <tr><td><span><?php echo $caption; ?></span></td></tr>
+            <tr><td>&nbsp;</td></tr>
 <?php        
             }
             break;
@@ -92,10 +113,10 @@ foreach (scandir('.', 1) as $file) { // walk all files in dir
 }
 ?>
         </table>
-        <span>
 <?php
     // Page navigation
     if ($numpics > $ppp) {
+        echo "<span>";
         $numpages = ceil($numpics / $ppp);
         if ($page <= 1) {
             echo '<a style="color: #cccccc">&lt;--</a>';
@@ -108,11 +129,11 @@ foreach (scandir('.', 1) as $file) { // walk all files in dir
         } else {
             echo '<a href="' . basename(__FILE__) . "?page=".($page + 1).'">--&gt;</a>';
         }
-	}
+        echo "</span>";
+    }
 ?>
-        </span>
     </center>
-    <br />
+    <br>
     <div id="footer">
         <a href="https://github.com/fbcom/minigallery" target="_new"><small>get this <u>script</u></small></a>
     </div>
