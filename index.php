@@ -17,16 +17,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
+        <title><?php echo $title; ?></title>
         <style type="text/css">
         <!--
-
             body {
                 margin: 0px;
                 background-color: #fafafa;
+                text-align: center;
             }
 
             img {
-                display: block;
                 margin-left: auto;
                 margin-right: auto; 
                 padding: 6px;
@@ -56,30 +57,19 @@
                 font-size: 0.75em;
             }
 
-            table {
-                padding: 0px;
-                border: 0px;
-                border-spacing: 0px;
-            }
-
-            td {
-                text-align: center;
-            }
-
             #footer {
-                font-family: Courier New, monospace;
-                font-size: 0.75em;
-                width: 100%;
                 position: relative;
                 bottom: 0px;
-                background-color:#f0f0f0;
+                width: 100%;
+                font-family: Courier New, monospace;
+                font-size: 0.75em;
                 text-align: right;
+                background-color:#f0f0f0;
             }
         -->
     </style>
 </head>
 <body>
-    <center>
         <br>
 <?php
     if (0 < strlen(trim(strip_tags($title.$subtitle)))) {
@@ -93,7 +83,6 @@
 <?php
     }
 ?>
-        <table>
 <?php
 $numpics = 0;
 foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
@@ -103,9 +92,13 @@ foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
             if ($numpics>($page-1)*$ppp && $numpics <= $page*$ppp) { // show then on current $page
                 $caption = basename($file,'.'.$extension); // caption := the filename without extension
 ?>
-            <tr><td><a<?php if ($imageclick) { ?> href="<?php echo $file; ?>"<?php } ?>><img src="<?php echo $file; ?>" <?php echo ($imagewidth > 0 ? 'width="'.$imagewidth.'px" ' : '');?>border="0" alt="<?php echo $imageclick ? 'click to enlarge' : $file; ?>"></a></td></tr>
-            <tr><td><span><?php echo $caption; ?></span></td></tr>
-            <tr><td>&nbsp;</td></tr>
+            <a<?php if ($imageclick) { echo "href=\"$file\""; } ?>>
+                <img src="<?php echo rawurlencode($file); ?>" <?php echo ($imagewidth > 0 ? 'width="'.$imagewidth.'px" ' : '');?>alt="<?php echo $imageclick ? 'click to enlarge' : $file; ?>">
+            </a>
+            <br>
+            <span><?php echo $caption; ?></span>
+            <br>
+            <br>
 <?php        
             }
             break;
@@ -113,7 +106,6 @@ foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
     }
 }
 ?>
-        </table>
 <?php
     // Page navigation
     if ($numpics > $ppp) {
@@ -131,12 +123,12 @@ foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
             echo '<a href="' . basename(__FILE__) . "?page=".($page + 1).'">--&gt;</a>';
         }
         echo "</span>";
+        echo "<br>";
     }
 ?>
-    </center>
-    <br>
+	<br>
     <div id="footer">
-        <a href="https://github.com/fbcom/minigallery" target="_new"><small>get this <u>script</u></small></a>
+        <a href="https://github.com/fbcom/minigallery" target="_blank"><small>get this <u>script</u></small></a>
     </div>
 </body>
 </html>
