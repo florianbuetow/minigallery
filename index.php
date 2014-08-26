@@ -7,12 +7,13 @@
     }
 
     $extensions = array('jpg', 'jpeg', 'png', 'gif'); // display these
-    $imagewidth = 0; // autoresize is turned off for values <= 0
-    $imageclick = 0; // generate link to original image for values != 0
-    $sortorder = 0; // sort order, 1 is reverse alphanum order
+    $fixedImageWidth = 0;   // is turned off for values <= 0
+    $maxImageWidth   = 900; // is turned off for values <= 0
+    $allowImageClick = 0;   // generate link to original image for values != 0
+    $sortOrder       = 1;   // 0 is alphanum order, 1 is reversed alphanum order
 
-    $title = '   Welcome to my mini gallery!   '; // optional
-    $subtitle = '"The sun never sets on my gallery."" - Larry Gagosian'; // optional
+    $title = '    Welcome to my mini gallery!       '; // optional
+    $subTitle = '"The sun never sets on my gallery."" - Larry Gagosian'; // optional
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,6 +22,7 @@
         <title><?php echo $title; ?></title>
         <style type="text/css">
         <!--
+
             body {
                 margin: 0px;
                 background-color: #fafafa;
@@ -35,6 +37,12 @@
                 border-color: #c8c8c8;
                 border-width: 1px;
                 background-color:white;
+<?php if ($maxImageWidth > 0) { ?>
+                max-width: <?php echo $maxImageWidth; ?>px;
+<?php } ?>
+<?php if ($fixedImageWidth > 0) { ?>
+                width: <?php echo $fixedImageWidth; ?>px;
+<?php } ?>
             }
 
             a:link {
@@ -72,12 +80,12 @@
 <body>
         <br>
 <?php
-    if (0 < strlen(trim(strip_tags($title.$subtitle)))) {
+    if (0 < strlen(trim(strip_tags($title.$subTitle)))) {
 ?>
         <span>
             <?php echo strlen(trim($title))>0 ? trim($title). "<br>\r" : ''; ?>
-            <?php echo str_pad('',max(strlen(strip_tags($title)),strlen(strip_tags($subtitle)))+4,'-'), "<br>\r"; ?>
-            <?php echo strlen(trim($subtitle))>0 ? trim($subtitle). "<br>\r" : ''; ?>
+            <?php echo str_pad('',max(strlen(strip_tags($title)),strlen(strip_tags($subTitle)))+4,'-'), "<br>\r"; ?>
+            <?php echo strlen(trim($subTitle))>0 ? trim($subTitle). "<br>\r" : ''; ?>
         </span>
         <br>
 <?php
@@ -85,15 +93,15 @@
 ?>
 <?php
 $numpics = 0;
-foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
+foreach (scandir('.', $sortOrder) as $file) { // walk all files in dir
     foreach ($extensions as $extension) {
         if (strpos($file, '.'.$extension)>0) { // find imagefiles
             $numpics++;
             if ($numpics>($page-1)*$ppp && $numpics <= $page*$ppp) { // show then on current $page
                 $caption = basename($file,'.'.$extension); // caption := the filename without extension
 ?>
-            <a<?php if ($imageclick) { echo "href=\"$file\""; } ?>>
-                <img src="<?php echo rawurlencode($file); ?>" <?php echo ($imagewidth > 0 ? 'width="'.$imagewidth.'px" ' : '');?>alt="<?php echo $imageclick ? 'click to enlarge' : $file; ?>">
+            <a<?php if ($allowImageClick) { echo " href=\"$file\""; } ?>>
+                <img src="<?php echo rawurlencode($file); ?>" alt="<?php echo $allowImageClick ? 'click to enlarge' : $file; ?>">
             </a>
             <br>
             <span><?php echo $caption; ?></span>
@@ -105,6 +113,7 @@ foreach (scandir('.', $sortorder) as $file) { // walk all files in dir
         }
     }
 }
+
 ?>
 <?php
     // Page navigation
