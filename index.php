@@ -1,7 +1,7 @@
 <?php
     // config
     $page = 1; // starting page
-    $ppp  = 4; // pics per page
+    $ppp  = 3; // pics per page
     if (isset($_GET['page'])) {
         $page = max(1, intval($_GET['page']));
     }
@@ -92,12 +92,12 @@
     }
 ?>
 <?php
-$numpics = 0;
-foreach (scandir('.', $sortOrder) as $file) { // walk all files in dir
+$numpics = 0; // stores the total number of displayable images
+foreach (scandir('.', $sortOrder) as $file) { // walk through all files in dir
     foreach ($extensions as $extension) {
-        if (strpos($file, '.'.$extension)>0) { // find imagefiles
+        if (strpos($file, '.'.$extension)>0) { // find displayable images by extension
             $numpics++;
-            if ($numpics>($page-1)*$ppp && $numpics <= $page*$ppp) { // show then on current $page
+            if ($numpics>($page-1)*$ppp && $numpics <= $page*$ppp) { // decide if image should be shown on current $page
                 $caption = basename($file,'.'.$extension); // caption := the filename without extension
 ?>
             <a<?php if ($allowImageClick) { echo " href=\"$file\""; } ?>>
@@ -116,7 +116,7 @@ foreach (scandir('.', $sortOrder) as $file) { // walk all files in dir
 
 ?>
 <?php
-    // Page navigation
+    // page navigation
     if ($numpics > $ppp) {
         echo "<span>";
         $numpages = ceil($numpics / $ppp);
