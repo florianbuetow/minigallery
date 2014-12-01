@@ -14,6 +14,7 @@
 
     $title = '    Welcome to my mini gallery!       '; // optional
     $subTitle = '"The sun never sets on my gallery."" - Larry Gagosian'; // optional
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,6 +28,7 @@
                 margin: 0px;
                 background-color: #fafafa;
                 text-align: center;
+                color: #000000;
             }
 
             img {
