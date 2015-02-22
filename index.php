@@ -34,10 +34,9 @@
             img {
                 margin-left: auto;
                 margin-right: auto; 
-                padding: 6px;
-                border: solid 1px;
-                border-color: #c8c8c8;
-                border-width: 1px;
+                -webkit-box-shadow: 0px 2px 8px rgba(0,0,0,0.33);                   
+                -moz-box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
+                box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
                 background-color:white;
 <?php if ($maxImageWidth > 0) { ?>
                 max-width: <?php echo $maxImageWidth; ?>px;
