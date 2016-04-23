@@ -31,10 +31,10 @@
                 color: #000000;
             }
 
-            img {
+            .gallery_image {
                 margin-left: auto;
-                margin-right: auto; 
-                -webkit-box-shadow: 0px 2px 8px rgba(0,0,0,0.33);                   
+                margin-right: auto;
+                -webkit-box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
                 -moz-box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
                 box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
                 background-color:white;
@@ -79,6 +79,7 @@
     </style>
 </head>
 <body>
+        <a href="https://github.com/fbcom/minigallery"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
         <br>
 <?php
     if (0 < strlen(trim(strip_tags($title.$subTitle)))) {
@@ -102,13 +103,13 @@ foreach (scandir('.', $sortOrder) as $file) { // walk through all files in dir
                 $caption = basename($file,'.'.$extension); // caption := the filename without extension
 ?>
             <a<?php if ($allowImageClick) { echo " href=\"$file\""; } ?>>
-                <img src="<?php echo rawurlencode($file); ?>" alt="<?php echo $allowImageClick ? 'click to enlarge' : $file; ?>">
+                <img class="gallery_image" src="<?php echo rawurlencode($file); ?>" alt="<?php echo $allowImageClick ? 'click to enlarge' : $file; ?>">
             </a>
             <br>
             <span><?php echo $caption; ?></span>
             <br>
             <br>
-<?php        
+<?php
             }
             break;
         }
@@ -138,7 +139,7 @@ foreach (scandir('.', $sortOrder) as $file) { // walk through all files in dir
 ?>
 	<br>
     <div id="footer">
-        <a href="https://github.com/fbcom/minigallery" target="_blank"><small>get this <u>script</u></small></a>
+        <!-- you can put something in here -->
     </div>
 </body>
 </html>
