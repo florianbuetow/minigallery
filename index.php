@@ -14,7 +14,6 @@
 
     $title = '    Welcome to my mini gallery!       '; // optional
     $subTitle = '"The sun never sets on my gallery."" - Larry Gagosian'; // optional
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,12 +37,8 @@
                 -moz-box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
                 box-shadow: 0px 2px 8px rgba(0,0,0,0.33);
                 background-color:white;
-<?php if ($maxImageWidth > 0) { ?>
-                max-width: <?php echo $maxImageWidth; ?>px;
-<?php } ?>
-<?php if ($fixedImageWidth > 0) { ?>
-                width: <?php echo $fixedImageWidth; ?>px;
-<?php } ?>
+                <?php if ($maxImageWidth > 0) { ?>max-width: <?php echo $maxImageWidth; ?>px;<?php } ?>
+                <?php if ($fixedImageWidth > 0) { ?>width: <?php echo $fixedImageWidth; ?>px;<?php } ?>
             }
 
             a:link {
